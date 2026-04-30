@@ -7,10 +7,12 @@ const { initDb } = require('./src/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-if (!process.env.JWT_SECRET) {
-  console.error('JWT_SECRET is not set');
-  process.exit(1);
-}
+// log what's available so we can debug on Railway
+console.log('env check:', {
+  hasMongo: !!(process.env.MONGODB_URI || process.env.MONGO_URL),
+  hasJwt: !!process.env.JWT_SECRET,
+  nodeEnv: process.env.NODE_ENV,
+});
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
