@@ -7,6 +7,11 @@ const { initDb } = require('./src/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not set');
+  process.exit(1);
+}
+
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
   credentials: true,
