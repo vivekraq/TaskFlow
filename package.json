@@ -1,0 +1,10 @@
+{
+  "name": "project-tracker",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cd .. && node scripts/copy-build.js && cd backend && npm install",
+    "start": "cd backend && node server.js",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev"
+  }
+}
