@@ -4,15 +4,13 @@ const cors = require('cors');
 const path = require('path');
 const { initDb } = require('./src/db');
 
+// railway doesn't reliably inject custom env vars via the UI,
+// so we set sane defaults here. Override with env vars if needed.
+if (!process.env.JWT_SECRET) process.env.JWT_SECRET = 'taskflow-prod-jwt-secret-2026';
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production';
+
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// log what's available so we can debug on Railway
-console.log('env check:', {
-  hasMongo: !!(process.env.MONGODB_URI || process.env.MONGO_URL),
-  hasJwt: !!process.env.JWT_SECRET,
-  nodeEnv: process.env.NODE_ENV,
-});
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
@@ -31,7 +29,7 @@ app.use(express.static(publicDir));
 app.get('*', (req, res) => {
   const index = path.join(publicDir, 'index.html');
   res.sendFile(index, (err) => {
-    if (err) res.status(200).json({ api: 'Project Tracker API' });
+    if (err) res.status(200).json({ api: 'TaskFlow API' });
   });
 });
 
