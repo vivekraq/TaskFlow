@@ -7,7 +7,10 @@ const { initDb } = require('./src/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use('/api/auth', require('./src/routes/auth'));
@@ -31,5 +34,5 @@ app.use((err, _req, res, _next) => {
 });
 
 initDb()
-  .then(() => app.listen(PORT, () => console.log(`Server running on port ${PORT}`)))
+  .then(() => app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`)))
   .catch((err) => { console.error('DB init failed:', err); process.exit(1); });
